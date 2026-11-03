@@ -1,4 +1,3 @@
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
     
@@ -27,7 +26,7 @@ public class Cliente {
         int resultado = 0;
         
         try {
-            String sql = "INSERT INTO clienes VALUES(?, ?, ?)";
+            String sql = "INSERT INTO clientes VALUES(?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);
             
         } catch (Exception e) {
@@ -61,10 +60,12 @@ public class Cliente {
         int resultado = 0;
         
         try {
-            String sql = "DELETE FROM clientes WHERE codigoC = ?";
+            String sql = "UPDATE clientes  SET nombreC = ?,rfc = ? WHERE codigoC = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             
-            ps.setString(1,codigoC );
+            ps.setString(1, codigoC);
+            ps.setString(2, nombreC);
+            ps.setString(3, rfc);
             return ps.executeUpdate();
             
         } catch (Exception e) {
