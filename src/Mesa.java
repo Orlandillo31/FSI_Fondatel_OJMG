@@ -23,13 +23,17 @@ public class Mesa {
         try {
             String sql = "INSERT INTO mesas VALUES(?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);
+             ps.setString(1, numero);
+             ps.setString(2, estadoM);
+             ps.setString(3, capacidad);
+            return ps.executeUpdate();
             
             
         } catch (Exception e) {
             System.out.println("Erro:"+ e.getMessage());
             return resultado;
         }
-        return 0;
+      
        
         
     }
@@ -62,13 +66,13 @@ public class Mesa {
             String sql = "UPDATE mesas SET estadoM = ?,capacidad = ? WHERE numero = ?";
             PreparedStatement ps = con.prepareStatement(sql);
 
-            ps.setString(1, numero);
-            ps.setString(2, estadoM);
-            ps.setString(3, capacidad);
+            ps.setString(1, estadoM);
+            ps.setString(2, capacidad);
+            ps.setString(3, numero);
             return ps.executeUpdate();
 
         } catch (Exception e) {
-            System.out.println("Erro:" + e.getMessage());
+            System.out.println("Error:" + e.getMessage());
         }
             return resultado;
        

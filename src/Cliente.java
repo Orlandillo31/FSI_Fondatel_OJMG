@@ -28,12 +28,16 @@ public class Cliente {
         try {
             String sql = "INSERT INTO clientes VALUES(?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, codigoC);
+            ps.setString(2, nombreC);
+            ps.setString(3, rfc);
+            return ps.executeUpdate();
             
         } catch (Exception e) {
             System.out.println("Erro:"+ e.getMessage());
             return resultado;
         }
-        return 0;
+        
        
         
     }
@@ -56,6 +60,7 @@ public class Cliente {
        
         
     }
+    
     public int actualizar(Connection con){
         int resultado = 0;
         
@@ -63,13 +68,13 @@ public class Cliente {
             String sql = "UPDATE clientes  SET nombreC = ?,rfc = ? WHERE codigoC = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             
-            ps.setString(1, codigoC);
-            ps.setString(2, nombreC);
-            ps.setString(3, rfc);
+            ps.setString(1, nombreC);
+            ps.setString(2, rfc);
+            ps.setString(3, codigoC);
             return ps.executeUpdate();
             
         } catch (Exception e) {
-            System.out.println("Erro:"+ e.getMessage());
+            System.out.println("Error:"+ e.getMessage());
             return resultado;
         }
        

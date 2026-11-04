@@ -27,15 +27,24 @@ public class Alimento {
         try {
             String sql = "INSERT INTO alimentos VALUES(?, ?, ?, ?, ?, ?, ?)";
              PreparedStatement ps = con.prepareStatement(sql);
+             ps.setString(1, idalimento);
+             ps.setString(2, nombre);
+             ps.setString(3, descripcion);
+             ps.setString(4, precio);
+             ps.setString(5, foto);
+             ps.setString(6, categoria);
+             ps.setString(7, estado);
+             return ps.executeUpdate();
              
         } catch (Exception e) {
             System.out.println("Erro:"+ e.getMessage());
             return resultado;
         }
-        return 0;
+        
        
         
     }
+    
     public int borrar(Connection con){
         int resultado = 0;
         
@@ -53,6 +62,7 @@ public class Alimento {
        
         
     }
+    
     public int actualizar(Connection con){
         int resultado = 0;
         
@@ -60,17 +70,17 @@ public class Alimento {
             String sql = "UPDATE alimentos  SET nombre = ?,descripcion = ?,precio = ?,foto = ?,categoria = ?, estado = ? WHERE idalimento = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             
-            ps.setString(1, idalimento);
-            ps.setString(2, nombre);
-            ps.setString(3, descripcion);
-            ps.setString(4, precio);
-            ps.setString(5,foto );
-            ps.setString(6,categoria );
+            ps.setString(1, nombre);
+            ps.setString(2, descripcion);
+            ps.setString(3, precio);
+            ps.setString(4,foto );
+            ps.setString(5,categoria );
+            ps.setString(6,estado );
             ps.setString(7,idalimento );
             return ps.executeUpdate();
             
         } catch (Exception e) {
-            System.out.println("Erro:"+ e.getMessage());
+            System.out.println("Error:"+ e.getMessage());
             return resultado;
         }
         

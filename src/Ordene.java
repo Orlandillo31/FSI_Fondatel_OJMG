@@ -34,20 +34,29 @@ public class Ordene {
         try {
             String sql = "INSERT INTO ordenes VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);
+             ps.setString(1, folio);
+             ps.setString(2, fecha_hora);
+             ps.setString(3, observaciones);
+             ps.setString(4, estadoO);
+             ps.setString(5, silla);
+             ps.setString(6, clientes_codigoC);
+             ps.setString(7, mesas_numero);
+             ps.setString(8, alimentos_idalimento);
+             ps.setString(9, empleados_mesero);
+             ps.setString(10, empleados_cocinero);
+            return ps.executeUpdate();
             
             
         } catch (Exception e) {
             System.out.println("Erro:"+ e.getMessage());
             return resultado;
         }
-        return 0;
+        
         
         
         
 
     }
-
-    
 
     public int borrar(Connection con) {
         int resultado = 0;
@@ -71,23 +80,23 @@ public class Ordene {
     public int actualizar(Connection con) {
         
         try {
-            String sql = "UPDATE ordenes SET fecha_hora = ?,observaciones = ?,estadoO = ?,silla = ?,clientes_codigoC = ?,mesas_numero = ?,alimentos_idalimento = ?, empleados_mesero = ?,empleados_cocinero = ? = ? WHERE folio = ?";
+            String sql = "UPDATE ordenes SET fecha_hora = ?,observaciones = ?,estadoO = ?,silla = ?,clientes_codigoC = ?,mesas_numero = ?,alimentos_idalimento = ?, empleados_mesero = ?,empleados_cocinero = ? WHERE folio = ?";
             PreparedStatement ps = con.prepareStatement(sql);
 
-            ps.setString(1, folio);
-            ps.setString(2, fecha_hora);
-            ps.setString(3, observaciones);
-            ps.setString(4, estadoO);
-            ps.setString(5, silla);
-            ps.setString(6, clientes_codigoC);
-            ps.setString(7, mesas_numero);
-            ps.setString(8, alimentos_idalimento);
-            ps.setString(9, empleados_mesero );
-            ps.setString(10,empleados_cocinero);
+            ps.setString(1, fecha_hora);
+            ps.setString(2, observaciones);
+            ps.setString(3, estadoO);
+            ps.setString(4, silla);
+            ps.setString(5, clientes_codigoC);
+            ps.setString(6, mesas_numero);
+            ps.setString(7, alimentos_idalimento);
+            ps.setString(8, empleados_mesero );
+            ps.setString(9, empleados_cocinero);
+            ps.setString(10, folio);
             return ps.executeUpdate();
 
         } catch (Exception e) {
-            System.out.println("Erro:" + e.getMessage());
+            System.out.println("Error:" + e.getMessage());
             return resultado;
         }
 
