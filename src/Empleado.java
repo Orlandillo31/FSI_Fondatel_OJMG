@@ -1,91 +1,65 @@
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.*;
 
 public class Empleado {
-    
-    String codigo,nombreE,puesto,turno,nom_usr,nip,estadoE;
+    String codigo, nombreE, puesto, turno, estadoE;
 
-    public Empleado() {
-    }
+    public Empleado() { }
 
-    public Empleado(String codigo, String nombreE, String puesto, String turno, String nom_usr, String nip, String estadoE) {
+    public Empleado(String codigo, String nombreE, String puesto, String turno, String estadoE) {
         this.codigo = codigo;
         this.nombreE = nombreE;
         this.puesto = puesto;
         this.turno = turno;
-        this.nom_usr = nom_usr;
-        this.nip = nip;
         this.estadoE = estadoE;
     }
-    
-    
-    
-    
 
     public int insertar(Connection con) {
         int resultado = 0;
-
         try {
-            String sql = "INSERT INTO empleados VALUES(?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, codigo);
-            ps.setString(2, nombreE);
-            ps.setString(3, puesto);
-            ps.setString(4, turno);
-            ps.setString(5, nom_usr);
-            ps.setString(6, nip);
-            ps.setString(7, estadoE);
-            return ps.executeUpdate();
-
+            String sql = "INSERT INTO empleados (codigo, nombreE, puesto, turno, estadoE) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setString(1, codigo);
+                ps.setString(2, nombreE);
+                ps.setString(3, puesto);
+                ps.setString(4, turno);
+                ps.setString(5, estadoE);
+                return ps.executeUpdate();
+            }
         } catch (Exception e) {
-            System.out.println("Erro:" + e.getMessage());
+            System.out.println("Error en Empleado.insertar: " + e.getMessage());
             return resultado;
         }
-        
-
     }
 
     public int borrar(Connection con) {
         int resultado = 0;
-
         try {
             String sql = "DELETE FROM empleados WHERE codigo = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-
-            ps.setString(1, codigo);
-            return ps.executeUpdate();
-
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setString(1, codigo);
+                return ps.executeUpdate();
+            }
         } catch (Exception e) {
-            System.out.println("Erro:" + e.getMessage());
+            System.out.println("Error en Empleado.borrar: " + e.getMessage());
             return resultado;
         }
-
     }
 
     public int actualizar(Connection con) {
         int resultado = 0;
-
         try {
-            String sql = "UPDATE empleados  SET nombreE = ?,puesto = ?,turno =?,nom_usr = ?,nip = ?,estadoE = ? WHERE codigo = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-
-           
-            ps.setString(1, nombreE);
-            ps.setString(2, puesto);
-            ps.setString(3, turno);
-            ps.setString(4, nom_usr);
-            ps.setString(5, nip);
-            ps.setString(6, estadoE);
-            ps.setString(7, codigo);
-            return ps.executeUpdate();
-
+            String sql = "UPDATE empleados SET nombreE = ?, puesto = ?, turno = ?, estadoE = ? WHERE codigo = ?";
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                ps.setString(1, nombreE);
+                ps.setString(2, puesto);
+                ps.setString(3, turno);
+                ps.setString(4, estadoE);
+                ps.setString(5, codigo);
+                return ps.executeUpdate();
+            }
         } catch (Exception e) {
-            System.out.println("Error:" + e.getMessage());
+            System.out.println("Error en Empleado.actualizar: " + e.getMessage());
             return resultado;
         }
-
     }
-
 }
-    
