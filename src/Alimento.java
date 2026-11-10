@@ -6,7 +6,8 @@ public class Alimento {
     String idalimento, nombre, descripcion, precio, foto, categoria, estado;
     // foto contiene la ruta del archivo de imagen.
 
-    public Alimento() { }
+    public Alimento() { 
+    }
 
     public Alimento(String idalimento, String nombre, String descripcion, String precio, String foto, String categoria, String estado) {
         this.idalimento = idalimento;

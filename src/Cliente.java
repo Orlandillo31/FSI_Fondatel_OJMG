@@ -3,7 +3,8 @@ import java.sql.*;
 public class Cliente {
     String codigoC, nombreC, rfc;
 
-    public Cliente() { }
+    public Cliente() { 
+    }
 
     public Cliente(String codigoC, String nombreC, String rfc) {
         this.codigoC = codigoC;

@@ -3,7 +3,8 @@ import java.sql.*;
 public class Empleado {
     String codigo, nombreE, puesto, turno, estadoE;
 
-    public Empleado() { }
+    public Empleado() { 
+    }
 
     public Empleado(String codigo, String nombreE, String puesto, String turno, String estadoE) {
         this.codigo = codigo;

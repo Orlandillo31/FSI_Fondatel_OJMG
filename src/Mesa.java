@@ -3,7 +3,8 @@ import java.sql.*;
 public class Mesa {
     String numero, estadoM, capacidad;
 
-    public Mesa() { }
+    public Mesa() {
+    }
 
     public Mesa(String numero, String estadoM, String capacidad) {
         this.numero = numero;

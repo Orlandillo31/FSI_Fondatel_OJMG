@@ -3,7 +3,8 @@ import java.sql.*;
 public class Ordene {
     String folio, fecha_hora, observaciones, estadoO, silla, clientes_codigoC, mesas_numero, alimentos_idalimento, empleados_mesero, empleados_cocinero;
 
-    public Ordene() { }
+    public Ordene() {
+    }
 
     public Ordene(String folio, String fecha_hora, String observaciones, String estadoO, String silla, String clientes_codigoC, String mesas_numero, String alimentos_idalimento, String empleados_mesero, String empleados_cocinero) {
         this.folio = folio;
