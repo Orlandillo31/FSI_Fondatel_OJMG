@@ -1,30 +1,23 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Locale;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
-
-
 
 public class FAcceso extends javax.swing.JFrame {
 
     Conexion cnx = new Conexion();
-    
-    String rol = "SELECT rol FROM fondatel WHERE nom_usr = '%s' AND nip = '%s' ";
-    
-    int intentos = 0;
-    
+
     public FAcceso() {
         initComponents();
-        setLocationRelativeTo(this);
-        
-        if (cnx.conectar("localhost", "fondatel", "root", "") == 1) {
-        } else {
-            JOptionPane.showMessageDialog(this, "Sin conexión. La ventana se cerrará...");
-            System.exit(0);
-        }
-        
-        
+        setLocationRelativeTo(null);
+        getRootPane().setDefaultButton(BAceptar);
+        BCancelar.addActionListener(evt -> dispose());
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -41,56 +34,56 @@ public class FAcceso extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("REDMeteoro");
+        setTitle("Fondatel | Acceso");
         setResizable(false);
 
-        jLabel1.setText("USUARIO");
+        jLabel1.setText("Usuario");
 
-        jLabel2.setText("NIP");
+        jLabel2.setText("NIP / contraseña");
 
-        BAceptar.setText("ACEPTAR");
+        BAceptar.setText("Ingresar");
         BAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BAceptarActionPerformed(evt);
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(49, 75, 62));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/rest2.jpg"))); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 102));
-        jLabel4.setText("REDMeteoro");
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Fondatel");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
+                .addContainerGap(26, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addGap(23, 23, 23))))
+                        .addGap(22, 22, 22))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        BCancelar.setText("CANCELAR");
+        BCancelar.setText("Cancelar");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        jLabel5.setText("INICIAR SESION");
+        jLabel5.setText("Iniciar sesión");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -98,7 +91,7 @@ public class FAcceso extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(BAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -122,63 +115,90 @@ public class FAcceso extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(TUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(TPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BAceptar)
                     .addComponent(BCancelar))
-                .addGap(33, 33, 33))
+                .addGap(22, 22, 22))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void BAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BAceptarActionPerformed
-        String usr = TUsuario.getText();
-        String nip = TPassword.getText();
-        
-        String sql = String.format(rol,usr, nip);
-        String tipo = cnx.obtenerDato(sql);
-        
-        switch(tipo){
-            case"administrador":
-                JF_Gerente fa = new JF_Gerente();
-                this.dispose();
-                cnx.desconectar();
-                fa.setVisible(true);
-                break;
-                
-            case"visitante":
-                JF_Cliente fr = new JF_Cliente();
-                this.dispose();
-                cnx.desconectar();
-                fr.setVisible(true);
-                break;
-                
-            case "":
-                JOptionPane.showMessageDialog(this, "Credenciales incorrectas");
-                intentos++;
-                if (intentos >= 3) {
-                    JOptionPane.showMessageDialog(this, "Intentos exedidos");
-                    System.exit(0);
-                }
-                
-                
-                
-                
-                break;
+        String usuario = TUsuario.getText().trim();
+        char[] nip = TPassword.getPassword();
 
-                
-                
+        try {
+            if (usuario.isEmpty() || nip.length == 0) {
+                JOptionPane.showMessageDialog(this, "Escribe tu usuario y tu NIP.");
+                return;
+            }
+
+            JFrame ventana = abrirVentana(buscarPuesto(usuario, nip));
+            if (ventana == null) {
+                JOptionPane.showMessageDialog(this,
+                        "Usuario o NIP incorrectos, o empleado sin acceso.");
+                TPassword.setText("");
+                TPassword.requestFocusInWindow();
+                return;
+            }
+
+            TPassword.setText("");
+            ventana.setVisible(true);
+            dispose();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "No se pudo verificar el acceso. Revisa que MySQL esté encendido y la conexión sea correcta.");
+        } finally {
+            Arrays.fill(nip, '\0');
         }
     }//GEN-LAST:event_BAceptarActionPerformed
+
+    private String buscarPuesto(String usuario, char[] nip) throws SQLException {
+        String sql = "SELECT puesto FROM empleados "
+                + "WHERE nom_usr = ? AND BINARY nip = ? AND LOWER(TRIM(estadoE)) = 'activo' LIMIT 2";
+
+        if (cnx.conectar("localhost", "fondatel", "root", "") != 1) {
+            throw new SQLException("Sin conexión con Fondatel.");
+        }
+
+        try (Connection con = cnx.con; PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, usuario);
+            ps.setString(2, new String(nip));
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    return "";
+                }
+                String puesto = rs.getString("puesto");
+                return puesto == null || rs.next() ? "" : puesto.trim().toLowerCase(Locale.ROOT);
+            }
+        }
+    }
+
+    private JFrame abrirVentana(String puesto) {
+        switch (puesto) {
+            case "administrador":
+            case "gerente":
+                return new JF_Gerente();
+            case "mesero":
+                return new JF_Mesero();
+            case "cocinero":
+                return new JF_Cocinero();
+            case "cajero":
+                return new JF_Cajero();
+            default:
+                return null;
+        }
+    }
 
     /**
      * @param args the command line arguments

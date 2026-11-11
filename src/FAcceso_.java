@@ -1,27 +1,25 @@
 
 import javax.swing.JOptionPane;
 
-
 public class FAcceso_ extends javax.swing.JFrame {
 
     Conexion cnx = new Conexion();
-    
+
     String rol = "SELECT rol FROM fondatel WHERE nom_usr = '%s' AND nip = '%s' ";
-    
+
     int intentos = 0;
-    
+
     public FAcceso_() {
         initComponents();
         setLocationRelativeTo(this);
-        
+
         if (cnx.conectar("localhost", "fondatel", "root", "") == 1) {
-            JOptionPane.showMessageDialog(this, "Se conecto correctamente a la base de datos");
+            JOptionPane.showMessageDialog(this, "Se conectó a la base de datos");
         } else {
             JOptionPane.showMessageDialog(this, "Sin conexión. La ventana se cerrará...");
             System.exit(0);
         }
-        
-        
+
     }
 
     /**
@@ -73,21 +71,21 @@ public class FAcceso_ extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
+                .addContainerGap(26, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addGap(23, 23, 23))))
+                        .addGap(22, 22, 22))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -148,25 +146,27 @@ public class FAcceso_ extends javax.swing.JFrame {
     private void BAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BAceptarActionPerformed
         String usr = TUsuario.getText();
         String nip = TPassword.getText();
-        
-        String sql = String.format(rol,usr, nip);
+
+        String sql = String.format(rol, usr, nip);
         String tipo = cnx.obtenerDato(sql);
-        
-        switch(tipo){
-            case"administrador":
+
+        switch (tipo) {
+            case "gerente":
                 JF_Gerente fa = new JF_Gerente();
-                this.dispose();
+                
                 cnx.desconectar();
                 fa.setVisible(true);
-                break;
-                
-            case"visitante":
-                JF_Mesero fr = new JF_Mesero();
                 this.dispose();
+                break;
+
+            case "mesero":
+                JF_Mesero fr = new JF_Mesero();
+                
                 cnx.desconectar();
                 fr.setVisible(true);
+                this.dispose();
                 break;
-                
+
             case "":
                 JOptionPane.showMessageDialog(this, "Credenciales incorrectas");
                 intentos++;
@@ -174,14 +174,9 @@ public class FAcceso_ extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Intentos exedidos");
                     System.exit(0);
                 }
-                
-                
-                
-                
+
                 break;
 
-                
-                
         }
     }//GEN-LAST:event_BAceptarActionPerformed
 

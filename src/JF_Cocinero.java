@@ -26,20 +26,102 @@ public class JF_Cocinero extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        PEncabezado = new javax.swing.JPanel();
+        LMarca = new javax.swing.JLabel();
+        LTitulo = new javax.swing.JLabel();
+        LDetalle = new javax.swing.JLabel();
+        LSeccion = new javax.swing.JLabel();
+        BPreparar = new javax.swing.JButton();
+        BEntregar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TRegistros = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Fondatel | Cocinero");
+
+        PEncabezado.setBackground(new java.awt.Color(49, 75, 62));
+        LMarca.setText("FONDATEL  /  RESTAURANTE");
+        LMarca.setFont(new java.awt.Font("Dialog", 1, 12));
+        LMarca.setForeground(new java.awt.Color(247, 202, 138));
+        LTitulo.setText("Cocinero");
+        LTitulo.setFont(new java.awt.Font("Dialog", 1, 29));
+        LTitulo.setForeground(new java.awt.Color(255, 255, 255));
+        LDetalle.setText("Revisa los pedidos y el estado de preparación.");
+        LDetalle.setForeground(new java.awt.Color(255, 255, 255));
+        LSeccion.setText("Pedidos de cocina");
+        LSeccion.setFont(new java.awt.Font("Dialog", 1, 18));
+        LSeccion.setForeground(new java.awt.Color(36, 54, 45));
+        BPreparar.setText("Preparar");
+        BEntregar.setText("Marcar entregada");
+        TRegistros.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {"Folio", "Mesa", "Alimento", "Observaciones", "Estado"}
+        ) {
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+        });
+        TRegistros.setFillsViewportHeight(true);
+        TRegistros.setRowHeight(26);
+        jScrollPane1.setViewportView(TRegistros);
+
+        javax.swing.GroupLayout PEncabezadoLayout = new javax.swing.GroupLayout(PEncabezado);
+        PEncabezado.setLayout(PEncabezadoLayout);
+        PEncabezadoLayout.setHorizontalGroup(
+            PEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PEncabezadoLayout.createSequentialGroup()
+                    .addGap(24)
+                    .addGroup(PEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(LMarca)
+                        .addComponent(LTitulo)
+                        .addComponent(LDetalle))
+                    .addGap(24))
+        );
+        PEncabezadoLayout.setVerticalGroup(
+            PEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PEncabezadoLayout.createSequentialGroup()
+                    .addGap(15)
+                    .addComponent(LMarca)
+                    .addGap(5)
+                    .addComponent(LTitulo)
+                    .addGap(3)
+                    .addComponent(LDetalle)
+                    .addGap(15))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 774, Short.MAX_VALUE)
+                .addComponent(PEncabezado, 0, -1, Short.MAX_VALUE)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(24)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(LSeccion)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(BPreparar)
+                            .addGap(8)
+                            .addComponent(BEntregar))
+                        .addComponent(jScrollPane1, 400, 714, Short.MAX_VALUE))
+                    .addGap(24))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 521, Short.MAX_VALUE)
+                .addGroup(layout.createSequentialGroup()
+                    .addComponent(PEncabezado, -2, -1, -2)
+                    .addGap(20)
+                    .addComponent(LSeccion)
+                    .addGap(10)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(BPreparar)
+                        .addComponent(BEntregar))
+                    .addGap(12)
+                    .addComponent(jScrollPane1, 200, 290, Short.MAX_VALUE)
+                    .addGap(22))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -78,5 +160,14 @@ public class JF_Cocinero extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel PEncabezado;
+    private javax.swing.JLabel LMarca;
+    private javax.swing.JLabel LTitulo;
+    private javax.swing.JLabel LDetalle;
+    private javax.swing.JLabel LSeccion;
+    private javax.swing.JButton BPreparar;
+    private javax.swing.JButton BEntregar;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable TRegistros;
     // End of variables declaration//GEN-END:variables
 }
