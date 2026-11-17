@@ -59,51 +59,58 @@ public class Conexion {
     //-------- Muestra el resultado de una consulta en una JTable
     //--------------------------------------------------------------------------
     public int entablar(String consulta, JTable malla) {
+        try (Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(consulta)) {
+            ResultSetMetaData datos = rs.getMetaData();
+            DefaultTableModel modelo = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int fila, int columna) {
+                    return false;
+                }
+            };
 
-        int correcta = 0;
-
-        try {
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(consulta);
-            ResultSetMetaData rsm = rs.getMetaData();
-            DefaultTableModel modelo = (DefaultTableModel) malla.getModel();
-            //limpiar tabla
-            modelo.setColumnCount(0);
-            modelo.setRowCount(0);
-
-            //agregar las columnas del resultado con su nombre
-            for (int k = 1; k <= rsm.getColumnCount(); k++) {
-                modelo.addColumn(rsm.getColumnName(k).toUpperCase());
+            for (int c = 1; c <= datos.getColumnCount(); c++) {
+                modelo.addColumn(datos.getColumnLabel(c));
             }
-
-            //agregar renglones con los datos
-            int renglon = 0;
             while (rs.next()) {
-                modelo.insertRow(renglon, new String[rsm.getColumnCount()]);
-                for (int k = 1; k <= rsm.getColumnCount(); k++) {
-                    if (rsm.getColumnType(k) == -4) { //tipo blob de imagen
-                        int w = malla.getColumnModel().getColumn(k-1).getWidth();
-                        int h = malla.getRowHeight();
-                        malla.getColumnModel().getColumn(k-1).setCellRenderer(new ImageRenderer(w, h));
-                        modelo.setValueAt(new ImageIcon(rs.getBytes(k)), renglon, k - 1);
-                    } else { //cualquier otro tipo que se puede manejar como cadena
-                        modelo.setValueAt(rs.getString(k), renglon, k - 1);
+                Object[] fila = new Object[datos.getColumnCount()];
+                for (int c = 1; c <= fila.length; c++) {
+                    if (datos.getColumnType(c) == Types.LONGVARBINARY) {
+                        byte[] imagen = rs.getBytes(c);
+                        fila[c - 1] = imagen == null || imagen.length == 0 ? null : new ImageIcon(imagen);
+                    } else {
+                        fila[c - 1] = rs.getString(c);
                     }
                 }
-                renglon++;
+                modelo.addRow(fila);
             }
-            
-            //Adaptar el ancho de las columnas
-
-        } catch (SQLException ex) {
-            correcta = 0;
-            System.out.println(ex.getMessage());
+            malla.setModel(modelo);
+            for (int c = 1; c <= datos.getColumnCount(); c++) {
+                if (datos.getColumnType(c) == Types.LONGVARBINARY) {
+                    TableColumn columna = malla.getColumnModel().getColumn(c - 1);
+                    columna.setCellRenderer(new ImageRenderer(columna.getWidth(), malla.getRowHeight()));
+                }
+            }
+            return 1;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return 0;
         }
+    }
 
-        
-        
-        return correcta;
-
+    public static void mostrarVista(String sql, JTable tabla) {
+        Conexion cnx = new Conexion();
+        if (cnx.conectar("localhost", "fondatel", "root", "") != 1) {
+            JOptionPane.showMessageDialog(tabla, "No se pudo conectar con Fondatel. Revisa MySQL.");
+            return;
+        }
+        try {
+            if (cnx.entablar(sql, tabla) != 1) {
+                JOptionPane.showMessageDialog(tabla, "No se pudo cargar la vista de Fondatel.");
+            }
+        } finally {
+            cnx.desconectar();
+        }
     }
 
     //--------------------------------------------------------------------------

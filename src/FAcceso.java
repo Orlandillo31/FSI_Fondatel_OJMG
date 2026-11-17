@@ -16,6 +16,7 @@ public class FAcceso extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         getRootPane().setDefaultButton(BAceptar);
         BCancelar.addActionListener(evt -> dispose());
+        BMenu.addActionListener(evt -> new JF_Cliente().setVisible(true));
     }
 
     @SuppressWarnings("unchecked")
@@ -31,6 +32,7 @@ public class FAcceso extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         BCancelar = new javax.swing.JButton();
+        BMenu = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -81,6 +83,7 @@ public class FAcceso extends javax.swing.JFrame {
         );
 
         BCancelar.setText("Cancelar");
+        BMenu.setText("Ver menú");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel5.setText("Iniciar sesión");
@@ -94,9 +97,11 @@ public class FAcceso extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(BAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(BAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(BCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(BCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -126,7 +131,8 @@ public class FAcceso extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BAceptar)
-                    .addComponent(BCancelar))
+                    .addComponent(BCancelar)
+                    .addComponent(BMenu))
                 .addGap(22, 22, 22))
         );
 
@@ -238,6 +244,7 @@ public class FAcceso extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BAceptar;
     private javax.swing.JButton BCancelar;
+    private javax.swing.JButton BMenu;
     private javax.swing.JPasswordField TPassword;
     private javax.swing.JTextField TUsuario;
     private javax.swing.JLabel jLabel1;

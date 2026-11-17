@@ -15,6 +15,11 @@ public class JF_Cliente extends javax.swing.JFrame {
      */
     public JF_Cliente() {
         initComponents();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        Conexion.mostrarVista("SELECT nombre AS Alimento, precio AS Precio, "
+                + "categoria AS Categoría FROM menu ORDER BY categoria, nombre", TRegistros);
+        TRegistros.getColumnModel().getColumn(0).setPreferredWidth(325);
+        BConsultar.addActionListener(evt -> new JF_Menu().setVisible(true));
     }
 
     /**
@@ -45,12 +50,12 @@ public class JF_Cliente extends javax.swing.JFrame {
         LTitulo.setText("Cliente");
         LTitulo.setFont(new java.awt.Font("Dialog", 1, 29));
         LTitulo.setForeground(new java.awt.Color(255, 255, 255));
-        LDetalle.setText("Consulta el consumo registrado en tu mesa.");
+        LDetalle.setText("Consulta el menú del restaurante.");
         LDetalle.setForeground(new java.awt.Color(255, 255, 255));
-        LSeccion.setText("Detalle del consumo");
+        LSeccion.setText("Alimentos disponibles");
         LSeccion.setFont(new java.awt.Font("Dialog", 1, 18));
         LSeccion.setForeground(new java.awt.Color(36, 54, 45));
-        BConsultar.setText("Consultar");
+        BConsultar.setText("Consultar menú");
         TRegistros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {"Mesa", "Silla", "Alimento", "Precio", "Estado"}

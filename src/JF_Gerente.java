@@ -1,3 +1,11 @@
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.io.File;
+import java.math.BigDecimal;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,6 +23,93 @@ public class JF_Gerente extends javax.swing.JFrame {
      */
     public JF_Gerente() {
         initComponents();
+        BAlimentos.addActionListener(evt -> abrirAlimentos());
+        cargarAlimentos();
+    }
+
+    private void cargarAlimentos() {
+        String sql = "SELECT idalimento AS ID, nombre AS Alimento, "
+                + "categoria AS Categoría, precio AS Precio, estado AS Estado "
+                + "FROM alimentos ORDER BY nombre";
+        Conexion.mostrarVista(sql, TRegistros);
+        TRegistros.getColumnModel().getColumn(1).setPreferredWidth(270);
+    }
+
+    private void abrirAlimentos() {
+        JTextField nombre = new JTextField(24);
+        JTextField descripcion = new JTextField(24);
+        JTextField precio = new JTextField(12);
+        JComboBox<String> categoria = new JComboBox<>(
+                new String[]{"Entrada", "Plato Principal", "Postre", "Bebida"});
+        JComboBox<String> estado = new JComboBox<>(new String[]{"Disponible", "Agotado"});
+        JTextField foto = new JTextField(24);
+        foto.setEditable(false);
+        JButton elegir = new JButton("Elegir...");
+        JPanel selector = new JPanel(new BorderLayout(5, 0));
+        selector.add(foto, BorderLayout.CENTER);
+        selector.add(elegir, BorderLayout.EAST);
+        elegir.addActionListener(evt -> {
+            JFileChooser archivos = new JFileChooser();
+            archivos.setAcceptAllFileFilterUsed(false);
+            archivos.setFileFilter(new FileNameExtensionFilter("Imágenes JPG y PNG", "jpg", "jpeg", "png"));
+            if (archivos.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                foto.setText(archivos.getSelectedFile().getAbsolutePath());
+                foto.setCaretPosition(0);
+            }
+        });
+
+        JPanel campos = new JPanel(new GridLayout(0, 2, 10, 7));
+        campos.add(new JLabel("Nombre:")); campos.add(nombre);
+        campos.add(new JLabel("Descripción:")); campos.add(descripcion);
+        campos.add(new JLabel("Precio:")); campos.add(precio);
+        campos.add(new JLabel("Categoría:")); campos.add(categoria);
+        campos.add(new JLabel("Estado:")); campos.add(estado);
+        campos.add(new JLabel("Fotografía:")); campos.add(selector);
+
+        Object[] botones = {"Registrar", "Cancelar"};
+        while (JOptionPane.showOptionDialog(this, campos, "Registrar alimento",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+                null, botones, botones[0]) == 0) {
+            String n = nombre.getText().trim();
+            String d = descripcion.getText().trim();
+            if (n.isEmpty() || n.length() > 100 || d.isEmpty() || d.length() > 255 || foto.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Completa nombre, descripción y fotografía.");
+                continue;
+            }
+            try {
+                BigDecimal p = new BigDecimal(precio.getText().trim().replace(',', '.'));
+                if (p.signum() <= 0 || p.compareTo(new BigDecimal("999999.99")) > 0
+                        || p.stripTrailingZeros().scale() > 2) throw new NumberFormatException();
+                File imagen = new File(foto.getText());
+                if (!imagen.isFile() || imagen.length() > 5 * 1024 * 1024 || ImageIO.read(imagen) == null) {
+                    JOptionPane.showMessageDialog(this, "Elige una imagen válida de hasta 5 MB.");
+                    continue;
+                }
+                Alimento alimento = new Alimento(null, n, d, p.toPlainString(), imagen.getAbsolutePath(),
+                        (String) categoria.getSelectedItem(), (String) estado.getSelectedItem());
+                Conexion cnx = new Conexion();
+                if (cnx.conectar("localhost", "fondatel", "root", "") != 1) {
+                    JOptionPane.showMessageDialog(this, "No se pudo conectar con Fondatel.");
+                    return;
+                }
+                int filas;
+                try {
+                    filas = alimento.insertar(cnx.con);
+                } finally {
+                    cnx.desconectar();
+                }
+                if (filas == 1) {
+                    cargarAlimentos();
+                    JOptionPane.showMessageDialog(this, "Alimento registrado.");
+                    return;
+                }
+                JOptionPane.showMessageDialog(this, "No se pudo registrar el alimento.");
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Escribe un precio positivo con hasta dos decimales.");
+            } catch (java.io.IOException ex) {
+                JOptionPane.showMessageDialog(this, "No se pudo leer la fotografía.");
+            }
+        }
     }
 
     /**

@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3" />
@@ -137,12 +137,12 @@
     </Component>
     <Component class="javax.swing.JButton" name="BPreparar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Preparar" />
+        <Property name="text" type="java.lang.String" value="Actualizar" />
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="BEntregar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Marcar entregada" />
+        <Property name="text" type="java.lang.String" value="Cerrar" />
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">

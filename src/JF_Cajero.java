@@ -15,6 +15,14 @@ public class JF_Cajero extends javax.swing.JFrame {
      */
     public JF_Cajero() {
         initComponents();
+        BPagar.addActionListener(evt -> cargarVista());
+        cargarVista();
+    }
+
+    private void cargarVista() {
+        String sql = "SELECT folio AS Folio, fecha_hora AS Fecha, mesas_numero AS Mesa, silla AS Silla, nombre AS Alimento, precio AS Importe "
+                + "FROM tickets ORDER BY fecha_hora DESC, folio DESC";
+        Conexion.mostrarVista(sql, TRegistros);
     }
 
     /**
@@ -50,7 +58,7 @@ public class JF_Cajero extends javax.swing.JFrame {
         LSeccion.setText("Órdenes para cobrar");
         LSeccion.setFont(new java.awt.Font("Dialog", 1, 18));
         LSeccion.setForeground(new java.awt.Color(36, 54, 45));
-        BPagar.setText("Marcar pagada");
+        BPagar.setText("Actualizar");
         TRegistros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {"Folio", "Mesa", "Alimento", "Importe", "Estado"}

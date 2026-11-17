@@ -15,6 +15,15 @@ public class JF_Cocinero extends javax.swing.JFrame {
      */
     public JF_Cocinero() {
         initComponents();
+        BPreparar.addActionListener(evt -> cargarVista());
+        BEntregar.addActionListener(evt -> dispose());
+        cargarVista();
+    }
+
+    private void cargarVista() {
+        String sql = "SELECT folio AS Folio, fecha_hora AS Fecha, nombre AS Alimento, observaciones AS Observaciones, estadoO AS Estado "
+                + "FROM comandas ORDER BY fecha_hora, folio";
+        Conexion.mostrarVista(sql, TRegistros);
     }
 
     /**
@@ -51,8 +60,8 @@ public class JF_Cocinero extends javax.swing.JFrame {
         LSeccion.setText("Pedidos de cocina");
         LSeccion.setFont(new java.awt.Font("Dialog", 1, 18));
         LSeccion.setForeground(new java.awt.Color(36, 54, 45));
-        BPreparar.setText("Preparar");
-        BEntregar.setText("Marcar entregada");
+        BPreparar.setText("Actualizar");
+        BEntregar.setText("Cerrar");
         TRegistros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {"Folio", "Mesa", "Alimento", "Observaciones", "Estado"}

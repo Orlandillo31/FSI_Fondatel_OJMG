@@ -15,6 +15,14 @@ public class JF_Mesero extends javax.swing.JFrame {
      */
     public JF_Mesero() {
         initComponents();
+        BRegistrar.addActionListener(evt -> cargarVista());
+        cargarVista();
+    }
+
+    private void cargarVista() {
+        String sql = "SELECT folio AS Folio, fecha_hora AS Fecha, mesas_numero AS Mesa, silla AS Silla, nombre AS Alimento, estadoO AS Estado "
+                + "FROM pedidos ORDER BY fecha_hora DESC, folio DESC";
+        Conexion.mostrarVista(sql, TRegistros);
     }
 
     /**
@@ -50,7 +58,7 @@ public class JF_Mesero extends javax.swing.JFrame {
         LSeccion.setText("Órdenes del servicio");
         LSeccion.setFont(new java.awt.Font("Dialog", 1, 18));
         LSeccion.setForeground(new java.awt.Color(36, 54, 45));
-        BRegistrar.setText("Registrar orden");
+        BRegistrar.setText("Actualizar");
         TRegistros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {"Folio", "Mesa", "Silla", "Alimento", "Estado"}

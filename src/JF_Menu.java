@@ -1,34 +1,98 @@
 
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.event.ItemEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 
 public class JF_Menu extends javax.swing.JFrame {
 
     Conexion cnx = new Conexion();
     
-    String todo = "SELEC * FROM menu";
-    String categorias = "SELECT DISTINCT categoria FROM menu ORDER BY categoria";
-    String por_categoria = "SELECT * FROM menu WHERE categoria = '%s' ORDER BY nombre";
-    
-    
-    
+    private final String todo = "SELECT nombre, descripcion, precio, foto, categoria FROM menu";
+    private final String categorias = "SELECT DISTINCT categoria FROM menu ORDER BY categoria";
+
     public JF_Menu() {
         initComponents();
-        setLocationRelativeTo(this);
-        setTitle("MENU DE FONDATEL");
+        setLocationRelativeTo(null);
+        setTitle("MENÚ DE FONDATEL");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         TMenu.setRowHeight(100);
-        
+        CBCategoria.setMaximumSize(new Dimension(180, 64));
+
         if (cnx.conectar("localhost", "fondatel", "root", "") == 1) {
-        JOptionPane.showMessageDialog(this, "Se conectó a la base de datos");
-        cnx.entablar(todo, TMenu);
-        cnx.seleccionar(categorias, CBCategoria);
+            cnx.seleccionar(categorias, CBCategoria);
+            cargarMenu(null);
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent evt) {
+                    cnx.desconectar();
+                }
+            });
         } else {
-        JOptionPane.showMessageDialog(this, "Sin conexión. La ventana se cerrará...");
-            System.exit(0);
+            jButton1.setEnabled(false);
+            CBCategoria.setEnabled(false);
+            JOptionPane.showMessageDialog(this, "Sin conexión. Revisa que MySQL esté encendido.");
         }
     }
 
-    
+    private void cargarMenu(String categoria) {
+        String sql = todo + (categoria == null ? "" : " WHERE categoria = ?")
+                + " ORDER BY categoria, nombre";
+        DefaultTableModel modelo = new DefaultTableModel(
+                new String[]{"Nombre", "Descripción", "Precio", "Foto", "Categoría"}, 0) {
+            @Override
+            public Class<?> getColumnClass(int columna) {
+                return columna == 3 ? Icon.class : Object.class;
+            }
+
+            @Override
+            public boolean isCellEditable(int fila, int columna) {
+                return false;
+            }
+        };
+
+        try (PreparedStatement consulta = cnx.con.prepareStatement(sql)) {
+            if (categoria != null) {
+                consulta.setString(1, categoria);
+            }
+            try (ResultSet rs = consulta.executeQuery()) {
+                while (rs.next()) {
+                    modelo.addRow(new Object[]{rs.getString("nombre"),
+                        rs.getString("descripcion"), rs.getBigDecimal("precio"),
+                        mostrarFoto(rs.getBytes("foto")), rs.getString("categoria")});
+                }
+            }
+            TMenu.setModel(modelo);
+            TMenu.getColumnModel().getColumn(1).setPreferredWidth(290);
+            TMenu.getColumnModel().getColumn(3).setMinWidth(96);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo cargar el menú: " + ex.getMessage());
+        }
+    }
+
+    private ImageIcon mostrarFoto(byte[] foto) {
+        if (foto == null || foto.length == 0) {
+            return null;
+        }
+        ImageIcon original = new ImageIcon(foto);
+        if (original.getIconWidth() <= 0 || original.getIconHeight() <= 0) {
+            return null;
+        }
+        double escala = Math.min(88.0 / original.getIconWidth(), 88.0 / original.getIconHeight());
+        int ancho = Math.max(1, (int) (original.getIconWidth() * escala));
+        int alto = Math.max(1, (int) (original.getIconHeight() * escala));
+        return new ImageIcon(original.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH));
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -83,20 +147,17 @@ public class JF_Menu extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 767, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 55, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jScrollPane1)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -104,17 +165,19 @@ public class JF_Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CBCategoriaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CBCategoriaItemStateChanged
-        String cat = CBCategoria.getSelectedItem().toString();
-        if (cat.equals("Todos")) {
-            cnx.entablar(todo, TMenu);
-        } else {
-            String sql = String.format(por_categoria, cat);
-            cnx.entablar(sql, TMenu);
+        if (evt.getStateChange() != ItemEvent.SELECTED || cnx.con == null) {
+            return;
         }
+        String categoria = (String) evt.getItem();
+        cargarMenu("Todos".equals(categoria) ? null : categoria);
     }//GEN-LAST:event_CBCategoriaItemStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        cnx.entablar(todo, TMenu);
+        if ("Todos".equals(CBCategoria.getSelectedItem())) {
+            cargarMenu(null);
+        } else {
+            CBCategoria.setSelectedItem("Todos");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
