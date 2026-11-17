@@ -23,7 +23,8 @@ public class JF_Gerente extends javax.swing.JFrame {
      */
     public JF_Gerente() {
         initComponents();
-        BAlimentos.addActionListener(evt -> abrirAlimentos());
+        BAlimentos.addActionListener(evt -> new JF_Menu().setVisible(true));
+        BRegistrarAlimento.addActionListener(evt -> registrarAlimento());
         cargarAlimentos();
     }
 
@@ -35,7 +36,7 @@ public class JF_Gerente extends javax.swing.JFrame {
         TRegistros.getColumnModel().getColumn(1).setPreferredWidth(270);
     }
 
-    private void abrirAlimentos() {
+    private void registrarAlimento() {
         JTextField nombre = new JTextField(24);
         JTextField descripcion = new JTextField(24);
         JTextField precio = new JTextField(12);
@@ -127,6 +128,7 @@ public class JF_Gerente extends javax.swing.JFrame {
         LDetalle = new javax.swing.JLabel();
         LSeccion = new javax.swing.JLabel();
         BAlimentos = new javax.swing.JButton();
+        BRegistrarAlimento = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TRegistros = new javax.swing.JTable();
 
@@ -145,7 +147,8 @@ public class JF_Gerente extends javax.swing.JFrame {
         LSeccion.setText("Catálogo de alimentos");
         LSeccion.setFont(new java.awt.Font("Dialog", 1, 18));
         LSeccion.setForeground(new java.awt.Color(36, 54, 45));
-        BAlimentos.setText("Alimentos");
+        BAlimentos.setText("Ver menú");
+        BRegistrarAlimento.setText("Registrar alimento");
         TRegistros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {},
             new String [] {"ID", "Alimento", "Categoría", "Precio", "Estado"}
@@ -192,7 +195,9 @@ public class JF_Gerente extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(LSeccion)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(BAlimentos))
+                            .addComponent(BAlimentos)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(BRegistrarAlimento))
                         .addComponent(jScrollPane1, 400, 714, Short.MAX_VALUE))
                     .addGap(24))
         );
@@ -204,7 +209,8 @@ public class JF_Gerente extends javax.swing.JFrame {
                     .addComponent(LSeccion)
                     .addGap(10)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(BAlimentos))
+                        .addComponent(BAlimentos)
+                        .addComponent(BRegistrarAlimento))
                     .addGap(12)
                     .addComponent(jScrollPane1, 200, 290, Short.MAX_VALUE)
                     .addGap(22))
@@ -256,6 +262,7 @@ public class JF_Gerente extends javax.swing.JFrame {
     private javax.swing.JLabel LDetalle;
     private javax.swing.JLabel LSeccion;
     private javax.swing.JButton BAlimentos;
+    private javax.swing.JButton BRegistrarAlimento;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable TRegistros;
     // End of variables declaration//GEN-END:variables

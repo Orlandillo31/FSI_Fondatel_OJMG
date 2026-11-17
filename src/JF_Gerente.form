@@ -29,6 +29,8 @@
             <Component id="LSeccion" attributes="0" />
             <Group type="102" attributes="0">
               <Component id="BAlimentos" attributes="0" />
+              <EmptySpace max="-2" attributes="0" />
+              <Component id="BRegistrarAlimento" attributes="0" />
             </Group>
             <Component id="jScrollPane1" attributes="0" min="400" pref="714" max="32767" />
           </Group>
@@ -45,6 +47,7 @@
           <EmptySpace min="10" pref="10" max="10" attributes="0" />
           <Group type="103" groupAlignment="3" attributes="0">
             <Component id="BAlimentos" attributes="0" />
+            <Component id="BRegistrarAlimento" attributes="0" />
           </Group>
           <EmptySpace min="12" pref="12" max="12" attributes="0" />
           <Component id="jScrollPane1" attributes="0" min="200" pref="290" max="32767" />
@@ -134,7 +137,12 @@
     </Component>
     <Component class="javax.swing.JButton" name="BAlimentos">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Alimentos" />
+        <Property name="text" type="java.lang.String" value="Ver menú" />
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="BRegistrarAlimento">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Registrar alimento" />
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
